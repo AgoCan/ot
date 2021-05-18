@@ -1,11 +1,11 @@
 package log
 
 import (
-	"ot/config"
 	"net"
 	"net/http"
 	"net/http/httputil"
 	"os"
+	"ot/config"
 	"runtime/debug"
 	"strings"
 	"time"
@@ -33,7 +33,7 @@ func InitLogger() (err error) {
 	encoder := getEncoder()
 	var l = new(zapcore.Level)
 	var l2 = new(zapcore.Level)
-	err = l.UnmarshalText([]byte(config.LogLevel))
+	err = l.UnmarshalText([]byte(config.Conf.Log.LogLevel))
 	err = l2.UnmarshalText([]byte("ERROR"))
 	if err != nil {
 

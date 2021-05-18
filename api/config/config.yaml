@@ -2,7 +2,7 @@
 # 数据库配置项
 db:
   mysql:
-    dbname: "example"
+    dbname: "ot"
     password: "root1234"
     username: "root"
     port: 3306

@@ -2,15 +2,15 @@ package main
 
 import (
 	"fmt"
-	"os"
 	"log"
-	
+	"os"
+
 	"github.com/urfave/cli/v2"
 
 	"ot/config"
-	"ot/models"
+	"ot/global"
+	"ot/pkg/gormx"
 	"ot/routers"
-
 )
 
 var (
@@ -36,20 +36,14 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	
-	// 初始化配置文件
+
 	config.InitConfig(&config.Opt)
-	// 连接数据库并在代码结束后关闭
-	err = models.InitMysql()
-	if err != nil {
-		// 数据库连接失败，直接报错
-		panic(err)
-	}
-	defer models.Close()
 
-	// 调用路由组
+	global.GVA_DB = gormx.New()
+	db, _ := global.GVA_DB.DB()
+	defer db.Close()
+
 	router := routers.SetupRouter()
-
 	err = router.Run(":9000")
 	if err != nil {
 		fmt.Println(err)

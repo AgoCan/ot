@@ -6,9 +6,9 @@ package config
 // https://github.com/go-yaml/yaml
 
 import (
+	"fmt"
 	"path"
 	"runtime"
-	"fmt"
 
 	"github.com/spf13/viper"
 )
@@ -18,59 +18,20 @@ var Conf *Config
 
 // Config 配置文件
 type Config struct {
-	Db  DbConfig
+	Db  Db
 	Log LogConfig
-}
-
-// DbConfig 数据库配置文件
-type DbConfig struct {
-	Mysql struct {
-		DbName   string
-		Password string
-		Username string
-		Port     string
-		Host     string
-	}
-}
-
-// LogConfig 日志配置文件
-type LogConfig struct {
-	LogDirector     string
-	LogInfoFilename string
-	LogInfoFilePath string
-	LogErrorFilename string
-	LogErrorFilePath string
-	LogMaxSize      int
-	LogMaxBackups   int
-	LogMaxAge       int
-	LogLevel        string
 }
 
 // 设置配置文件的 环境变量
 var (
-	//MysqlDbName 数据库名称
-	MysqlDbName string
-	// MysqlPassword 数据库密码
-	MysqlPassword string
-	// MysqlUsername 连接数据库用户名
-	MysqlUsername string
-	// MysqlPort 数据库端口号
-	MysqlPort string
-	// MysqlHost 数据库主机
-	MysqlHost string
-	// MysqlConnect gorm连接数据库信息
 	MysqlConnect string
 	// LogDirector 日志目录
 	LogDirector string
 	// LogInfoFile info日志文件
-	LogInfoFilename string
-	LogMaxSize      int
-	LogMaxBackups   int
-	LogMaxAge       int
-	LogLevel        string
 )
+
 // 获取文件绝对路径
-func getCurrPath() string {
+func getCurrentPath() string {
 	var abPath string
 	_, filename, _, ok := runtime.Caller(1)
 	if ok {
@@ -93,15 +54,12 @@ func InitConfig(opt *Option) (err error) {
 		fmt.Println("err:", err)
 		return err
 	}
-	MysqlConnect = Conf.Db.Mysql.Username + ":" + Conf.Db.Mysql.Password + "@tcp(" +
-		Conf.Db.Mysql.Host + ":" + Conf.Db.Mysql.Port + ")/" + Conf.Db.Mysql.DbName +
-		"?charset=utf8mb4&parseTime=True&loc=Local"
 	LogDirector = Conf.Log.LogDirector
 	if LogDirector == "" {
-		LogDirector = path.Join(path.Dir(getCurrPath()), "log")
+		LogDirector = path.Join(path.Dir(getCurrentPath()), "log")
 	}
 	Conf.Log.LogInfoFilePath = path.Join(LogDirector, viper.GetString("log.logInfoFilename"))
 	Conf.Log.LogErrorFilePath = path.Join(LogDirector, viper.GetString("log.logErrorFilename"))
-	
+
 	return nil
 }

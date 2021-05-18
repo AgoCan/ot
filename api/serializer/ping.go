@@ -11,8 +11,7 @@ type Ping struct {
 //BuildPing 测试序列化器
 func BuildPing(ping models.Ping) Ping {
 	return Ping{
-		ID:  ping.ID,
+		ID:  int(ping.ID),
 		Msg: ping.Msg,
 	}
 }
-
