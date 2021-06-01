@@ -16,3 +16,10 @@ log:
   logMaxBackups: 5
   logMaxAge: 10
   logLevel: info
+jwt:
+  enable: true
+  signingMethod: "HS512"
+  signingKey: "ot"
+  expired: 7200
+  store: "file"
+  filePath: "data/jwt_auth.db"

@@ -20,6 +20,7 @@ var Conf *Config
 type Config struct {
 	Db  Db
 	Log LogConfig
+	Jwt Jwt
 }
 
 // 设置配置文件的 环境变量
