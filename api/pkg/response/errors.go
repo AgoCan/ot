@@ -13,6 +13,7 @@ var (
 
 // 定义错误
 var (
+	Success                    = NewResponse(200, 200, "ok")
 	ErrBadRequest              = New400Response("请求发生错误")
 	ErrInvalidParent           = New400Response("无效的父级节点")
 	ErrNotAllowDeleteWithChild = New400Response("含有子级，不能删除")

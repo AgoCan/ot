@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"ot/api"
+	"ot/middleware"
 	mdAuth "ot/middleware/auth"
 	"ot/middleware/cors"
 	"ot/middleware/log"
@@ -17,10 +18,14 @@ func SetupRouter() *gin.Engine {
 	}
 	router.Use(log.GinLogger(log.Logger),
 		log.GinRecovery(log.Logger, true))
-	a, _, _ := mdAuth.InitAuth()
-
-	router.Use(mdAuth.UserAuthMiddleware(a))
 	router.Use(cors.Cors())
+
+	allow := middleware.AllowPathPrefixSkipper("/api/v1/login")
+	a, _, _ := mdAuth.InitAuth()
+	router.Use(mdAuth.UserAuthMiddleware(a, allow))
+
 	router.GET("/health", api.Health)
+	v1 := router.Group("api/v1", api.Login)
+	v1.POST("/login")
 	return router
 }

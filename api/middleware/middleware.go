@@ -34,6 +34,7 @@ func AllowPathPrefixSkipper(prefixes ...string) SkipperFunc {
 		pathLen := len(path)
 
 		for _, p := range prefixes {
+
 			if pl := len(p); pathLen >= pl && path[:pl] == p {
 				return true
 			}

@@ -47,7 +47,7 @@ func Wrap500Response(err error, msg string, args ...interface{}) error {
 }
 
 // NewResponse 创建响应错误
-func NewResponse(code, statusCode int, msg string, args ...interface{}) error {
+func NewResponse(code, statusCode int, msg string, args ...interface{}) *ResponseError {
 	res := &ResponseError{
 		Code:       code,
 		Message:    fmt.Sprintf(msg, args...),
